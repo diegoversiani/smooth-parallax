@@ -21,7 +21,7 @@ bower install smooth-parallax
 
 ## Build
 
-NOTE: As a prerequisite, you will need [npm][https://npmjs.com/] and [gulp][http://gulpjs.com/] installed: `npm install -g gulp`
+NOTE: As a prerequisite, you will need [https://npmjs.com/][npm] and [http://gulpjs.com/][gulp] installed: `npm install -g gulp`
 
 ```
 npm install
@@ -40,7 +40,7 @@ Diego Versiani: http://diegoversiani.me
 
 ## License
 
-Licensed under [MIT][mit]. Enjoy.
+Licensed under MIT. Enjoy.
 
 ## Acknowledgement
 
