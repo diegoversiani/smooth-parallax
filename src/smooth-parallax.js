@@ -15,63 +15,162 @@
  * Based on the work of:
  * Rachel Smith: https://codepen.io/rachsmith/post/how-to-move-elements-on-scroll-in-a-way-that-doesn-t-suck-too-bad
  */
+(function (root, factory) {
+  if ( typeof define === 'function' && define.amd ) {
+    define(, factory(root));
+  } else if ( typeof exports === 'object' ) {
+    module.exports = factory(root);
+  } else {
+    root.SmoothParallax = factory(root);
+  }
+})(typeof global !== 'undefined' ? global : this.window || this.global, function (root) {
 
-(function(){
-  
   'use strict';
 
-  // Initialize EventListeners
-  window.addEventListener("DOMContentLoaded", init);
-
+  //
+  // Variables
+  //
 
   var _container;
-  var _width, _height, _scrollHeight;
-  var pre = prefix();
+  var _width, _height, _scrollHeight, _viewPortWidth;
+  var _prefix = getBrowserPrefix();
   var _scrollPercent = 0;
   var _scrollOffset = 0;
-  var _jsPrefix  = ( pre.lowercase == 'moz' ) ? 'Moz' : pre.lowercase;
-  var _cssPrefix = pre.css;
+  var _jsPrefix  = ( _prefix.lowercase == 'moz' ) ? 'Moz' : _prefix.lowercase;
+  var _cssPrefix = _prefix.css;
   var _movingElements = [];
   var _positions = [];
+  var window = root; // Map window to root to avoid confusion
+  var publicMethods = {}; // Placeholder for public methods
 
-
-
-
-  function init() {
-    var viewPortWidth = document.documentElement.clientWidth || window.innerWidth;
-
-    if ( viewPortWidth >= 750 ) {
-      initMovingElements();
-      loop();
-    }
+  // Default settings
+  var defaults = {
+    turkey: true,
+    mayo: false,
+    bread: 'wheat',
   };
 
 
+  //
+  // Methods
+  //
 
+  /**
+   * Merge two or more objects. Returns a new object.
+   * @private
+   * @param {Boolean}  deep     If true, do a deep (or recursive) merge [optional]
+   * @param {Object}   objects  The objects to merge together
+   * @returns {Object}          Merged values of defaults and options
+   */
+  var extend = function () {
 
-  /* See shared/which-browser-prefix.js */
-  function prefix() {
+      // Variables
+      var extended = {};
+      var deep = false;
+      var i = 0;
+      var length = arguments.length;
+
+      // Check if a deep merge
+      if ( Object.prototype.toString.call( arguments[0] ) === '[object Boolean]' ) {
+          deep = arguments[0];
+          i++;
+      }
+
+      // Merge the object into the extended object
+      var merge = function (obj) {
+          for ( var prop in obj ) {
+              if ( Object.prototype.hasOwnProperty.call( obj, prop ) ) {
+                  // If deep merge and property is an object, merge properties
+                  if ( deep && Object.prototype.toString.call(obj[prop]) === '[object Object]' ) {
+                      extended[prop] = extend( true, extended[prop], obj[prop] );
+                  } else {
+                      extended[prop] = obj[prop];
+                  }
+              }
+          }
+      };
+
+      // Loop through each object and conduct a merge
+      for ( ; i < length; i++ ) {
+          var obj = arguments[i];
+          merge(obj);
+      }
+
+      return extended;
+
+  };
+
+  /**
+   * Keep updating elements position infinitelly.
+   * @private
+   */
+  var loopUpdatePositions = function () {
+    updateElementsPosition();
+    requestAnimationFrame(loopUpdatePositions);
+  };
+
+  /**
+   * Get browser prefix
+   * @private
+   */
+  var getBrowserPrefix = function () {
     var styles = window.getComputedStyle(document.documentElement, ''),
-      pre = (Array.prototype.slice
+      _prefix = (Array.prototype.slice
         .call(styles)
         .join('') 
         .match(/-(moz|webkit|ms)-/) || (styles.OLink === '' && ['', 'o'])
       )[1],
-      dom = ('WebKit|Moz|MS|O').match(new RegExp('(' + pre + ')', 'i'))[1];
+      dom = ('WebKit|Moz|MS|O').match(new RegExp('(' + _prefix + ')', 'i'))[1];
     
     return {
         dom: dom,
-        lowercase: pre,
-        css: '-' + pre + '-',
-        js: pre[0].toUpperCase() + pre.substr(1)
+        lowercase: _prefix,
+        css: '-' + _prefix + '-',
+        js: _prefix[0].toUpperCase() + _prefix.substr(1)
       };
   };
 
+  /**
+   * Get movable element container
+   * @private
+   */
+  var getElementContainer = function ( element ) {
+    var containerId = element.getAttribute( 'data-container-id' );
 
+    if ( containerId != '' && document.getElementById( containerId ) ) {
+      _container = document.getElementById( containerId );
+    }
+    else {
+      _container = element.parentNode;
+    }
 
+    return _container;
+  };
 
+  /**
+   * Calculate variables used to determine elements position
+   * @private
+   */
+  var calculateVariables = function ( positionData ) {
+    _width = positionData.container.scrollWidth;
+    _height = positionData.container.scrollHeight;
+    _scrollHeight = _height + window.innerHeight;
+    _scrollOffset = window.innerHeight - positionData.container.getBoundingClientRect().top;
+    _scrollPercent = _scrollOffset/_scrollHeight || 0;
 
-  function initMovingElements() {
+    if ( _scrollPercent < 0 ) {
+      _scrollPercent = 0;
+    }
+    else if ( _scrollPercent > 1 ) {
+      _scrollPercent = 1;
+    }
+  };
+
+  /**
+   * Initializes positions for each moving element.
+   * @private
+   */
+  var initializeMovingElementsPosition = function () {
     var startPercent,
         startX,
         startY,
@@ -114,47 +213,11 @@
     }
   };
 
-
-
-
-
-  function getElementContainer( element ) {
-    var containerId = element.getAttribute( 'data-container-id' );
-
-    if ( containerId != '' && document.getElementById( containerId ) ) {
-      _container = document.getElementById( containerId );
-    }
-    else {
-      _container = element.parentNode;
-    }
-
-    return _container;
-  };
-
-
-
-
-
-  function calculateVariables( positionData ) {
-    _width = positionData.container.scrollWidth;
-    _height = positionData.container.scrollHeight;
-    _scrollHeight = _height + window.innerHeight;
-    _scrollOffset = window.innerHeight - positionData.container.getBoundingClientRect().top;
-    _scrollPercent = _scrollOffset/_scrollHeight || 0;
-
-    if ( _scrollPercent < 0 ) {
-      _scrollPercent = 0;
-    }
-    else if ( _scrollPercent > 1 ) {
-      _scrollPercent = 1;
-    }
-  };
-
-
-
-
-
-  function updateElementsPosition() {
+  /**
+   * Updates moving elements position.
+   * @private
+   */
+  var updateElementsPosition = function () {
     for (var i = 0; i < _movingElements.length; i++) {
       var p = _positions[i],
           baseWidth = _movingElements[i].scrollWidth,
@@ -192,15 +255,48 @@
     }
   };
 
-
-
-
-
-  function loop() {
-    updateElementsPosition();
-    requestAnimationFrame(loop);
+  /**
+   * Get movable element container
+   * @private
+   */
+  var initializeVariables = function () {
+    _viewPortWidth = document.documentElement.clientWidth || window.innerWidth;
   };
 
 
+  /**
+   * Initializes plugin
+   */
+  publicMethods.init = function ( options ) {
+      // Merge user options with defaults
+      var settings = extend( defaults, options || {} );
 
-})();
+      // Listen for click events
+      document.addEventListener( 'click', function (){
+        // Do something...
+      }, false );
+
+      // Listen for window resize events
+      window.addEventListener( 'resize',  function (){
+        // Do something...
+      }, false );
+
+      // Initialize variables
+      initializeVariables();
+
+      if ( _viewPortWidth >= 750 ) {
+        initializeMovingElementsPosition();
+        loopUpdatePositions();
+      }
+  };
+
+
+  //
+  // Public APIs
+  //
+  return publicMethods;
+
+  // TODO: Remove load event listener, to allow developer to choose when to init plugin
+  window.addEventListener("DOMContentLoaded", init);
+
+});

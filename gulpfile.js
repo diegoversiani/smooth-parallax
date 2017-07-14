@@ -42,7 +42,7 @@ gulp.task('build-scripts', function() {
   // compiled (.min.js)
   gulp.src(src)
     .pipe(concat('smooth-parallax.min.js'))
-    .pipe(uglify())
+    // .pipe(uglify())
     .pipe(gulp.dest('./dist/'));
 
 });
