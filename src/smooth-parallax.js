@@ -35,11 +35,10 @@
 
   var _container;
   var _width, _height, _scrollHeight, _viewPortWidth;
-  var _prefix = getBrowserPrefix();
+  var _prefix;
   var _scrollPercent = 0;
   var _scrollOffset = 0;
-  var _jsPrefix  = ( _prefix.lowercase == 'moz' ) ? 'Moz' : _prefix.lowercase;
-  var _cssPrefix = _prefix.css;
+  var _jsPrefix, _cssPrefix;
   var _movingElements = [];
   var _positions = [];
   var window = root; // Map window to root to avoid confusion
@@ -65,41 +64,39 @@
    * @returns {Object}          Merged values of defaults and options
    */
   var extend = function () {
+    // Variables
+    var extended = {};
+    var deep = false;
+    var i = 0;
+    var length = arguments.length;
 
-      // Variables
-      var extended = {};
-      var deep = false;
-      var i = 0;
-      var length = arguments.length;
+    // Check if a deep merge
+    if ( Object.prototype.toString.call( arguments[0] ) === '[object Boolean]' ) {
+      deep = arguments[0];
+      i++;
+    }
 
-      // Check if a deep merge
-      if ( Object.prototype.toString.call( arguments[0] ) === '[object Boolean]' ) {
-          deep = arguments[0];
-          i++;
-      }
-
-      // Merge the object into the extended object
-      var merge = function (obj) {
-          for ( var prop in obj ) {
-              if ( Object.prototype.hasOwnProperty.call( obj, prop ) ) {
-                  // If deep merge and property is an object, merge properties
-                  if ( deep && Object.prototype.toString.call(obj[prop]) === '[object Object]' ) {
-                      extended[prop] = extend( true, extended[prop], obj[prop] );
-                  } else {
-                      extended[prop] = obj[prop];
-                  }
-              }
+    // Merge the object into the extended object
+    var merge = function (obj) {
+      for ( var prop in obj ) {
+        if ( Object.prototype.hasOwnProperty.call( obj, prop ) ) {
+          // If deep merge and property is an object, merge properties
+          if ( deep && Object.prototype.toString.call(obj[prop]) === '[object Object]' ) {
+            extended[prop] = extend( true, extended[prop], obj[prop] );
+          } else {
+            extended[prop] = obj[prop];
           }
-      };
-
-      // Loop through each object and conduct a merge
-      for ( ; i < length; i++ ) {
-          var obj = arguments[i];
-          merge(obj);
+        }
       }
+    };
 
-      return extended;
+    // Loop through each object and conduct a merge
+    for ( ; i < length; i++ ) {
+      var obj = arguments[i];
+      merge(obj);
+    }
 
+    return extended;
   };
 
   /**
@@ -223,7 +220,8 @@
     for (var i = 0; i < _movingElements.length; i++) {
       var p = _positions[i],
           baseWidth = _movingElements[i].scrollWidth,
-          baseHeight = _movingElements[i].scrollHeight;
+          baseHeight = _movingElements[i].scrollHeight,
+          transformValue;
 
       calculateVariables( p );
       
@@ -251,9 +249,9 @@
       }
 
       // update element style
-      _transformValue = 'translate3d(' + p.current.x + 'px, ' + p.current.y + 'px, 0px)';
-      _movingElements[i].style[ _jsPrefix + 'Transform' ] = _transformValue;
-      _movingElements[i].style.transform = _transformValue;
+      transformValue = 'translate3d(' + p.current.x + 'px, ' + p.current.y + 'px, 0px)';
+      _movingElements[i].style[ _jsPrefix + 'Transform' ] = transformValue;
+      _movingElements[i].style.transform = transformValue;
     }
   };
 
@@ -263,6 +261,9 @@
    */
   var initializeVariables = function () {
     _viewPortWidth = document.documentElement.clientWidth || window.innerWidth;
+    _prefix = getBrowserPrefix();
+    _jsPrefix = ( _prefix.lowercase == 'moz' ) ? 'Moz' : _prefix.lowercase;
+    _cssPrefix = _prefix.css;
   };
 
 
@@ -273,18 +274,9 @@
       // Merge user options with defaults
       var settings = extend( defaults, options || {} );
 
-      // Listen for click events
-      document.addEventListener( 'click', function (){
-        // Do something...
-      }, false );
-
-      // Listen for window resize events
-      window.addEventListener( 'resize',  function (){
-        // Do something...
-      }, false );
-
       // Initialize variables
       initializeVariables();
+      console.log('initializeVariables');
 
       if ( _viewPortWidth >= 750 ) {
         initializeMovingElementsPosition();
@@ -298,7 +290,13 @@
   //
   return publicMethods;
 
-  // TODO: Remove load event listener, to allow developer to choose when to init plugin
-  window.addEventListener("DOMContentLoaded", init);
-
 });
+
+
+// TODO: Remove load event listener, to allow developer to choose when to init plugin
+window.addEventListener("DOMContentLoaded", function () { window.SmoothParallax.init() });
+
+
+
+
+
