@@ -1,6 +1,6 @@
 {
   "name": "smooth-parallax",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Smooth Parallax makes it a lot easier to move objects when the page scroll with ease.",
   "main": "src/smooth-parallax.js",
   "scripts": {

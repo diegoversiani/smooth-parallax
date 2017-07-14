@@ -1,4 +1,6 @@
 /**
+ * SmoothParallax 1.1.0
+ * 
  * File smooth-parallax.js.
  *
  * Yet another parallax script. Smooth parallax is intended to make it a lot easier to
