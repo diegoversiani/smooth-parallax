@@ -1,0 +1,60 @@
+#sky {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 300vh;
+  background-image: linear-gradient(-180deg, #268BD2 0%, #C5E0E8 21%, #F0F2E4 41%, #032833 82%);
+}
+
+#mountains,
+#foreground {
+  svg,
+  img {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    max-width: none;
+  }
+}
+
+#mountains {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 300vh;
+}
+
+#content {
+  position: relative;
+  bottom: 0;
+  padding: $spacing-unit;
+  background: rgba(255,255,255,0.80);
+  border: 1px solid #979797;
+  border-radius: 4px;
+}
+
+#foreground {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+
+// Z-INDEX
+#sky { z-index: -1; }
+#mountains { z-index: 10; }
+#content { z-index: 20; }
+#foreground { z-index: 30; }
+
+#hippie-van { z-index: 9; }
+#road { z-index: 8; }
+#hills { z-index: 7; }
+
+#mountains-level-1 { z-index: 4; }
+#mountains-level-2 { z-index: 3; }
+#mountains-level-3 { z-index: 2; }
+#mountains-level-4 { z-index: 1; }
+

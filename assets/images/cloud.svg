@@ -1,0 +1,23 @@
+
+<svg width="229px" height="124px" viewBox="0 0 229 124" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 45.1 (43504) - http://www.bohemiancoding.com/sketch -->
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M906,100 C922.568542,100 936,86.5685425 936,70 C936,53.4314575 922.568542,40 906,40 C904.259868,40 902.554339,40.148156 900.89534,40.4325419 C894.042814,28.2383854 880.983496,20 866,20 C862.828009,20 859.742252,20.3692154 856.783362,21.0670145 C847.72219,8.31763507 832.832439,0 816,0 C795.406798,0 777.721344,12.4495463 770.059394,30.2328824 C768.727598,30.0790622 767.373032,30 766,30 C746.670034,30 731,45.6700338 731,65 C731,84.3299662 746.670034,100 766,100 L906,100 Z" id="path-1"></path>
+        <filter x="-9.5%" y="-16.5%" width="119.0%" height="139.0%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="3" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="6" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.291808197 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Welcome" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Desktop" transform="translate(-763.000000, -101.000000)">
+            <g id="Clouds" transform="translate(44.000000, 110.000000)">
+                <g id="Cloud">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

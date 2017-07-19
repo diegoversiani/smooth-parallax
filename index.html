@@ -1,0 +1,32 @@
+---
+layout: home
+---
+
+<div class="home">
+
+  <div class="introduction">
+    <h1 class="title">Smooth Parallax</h1>
+    <h2 class="subtitle">Parallax that <u>doesn't suck!</u></h2>
+    <p class="introduction-text">
+      Smooth parallax makes it easy to move objects when you scroll being it images, divs or <em>what-have-you</em>.
+    </p>
+    <p class="install-instructions">
+      $ npm install smooth-parallax <br>
+      $ bower install smooth-parallax
+    </p>
+  </div>
+  <div id="sky"></div>
+  <div id="mountains">
+    {% include_relative assets/images/mountains-level-1.svg %}
+    {% include_relative assets/images/mountains-level-2.svg %}
+    {% include_relative assets/images/mountains-level-3.svg %}
+    {% include_relative assets/images/mountains-level-4.svg %}
+  </div>
+  <div id="content">{% capture readme_include %}{% include_relative README.md %}{% endcapture %}{{ readme_include | markdownify }}</div>
+  <div id="foreground">
+    {% include_relative assets/images/hills.svg %}
+    {% include_relative assets/images/road.svg %}
+    <img id="hippie-van" width="78" height="40" src="{{ site.baseurl }}/assets/images/hippie-van.png">      
+  </div>
+
+</div>
