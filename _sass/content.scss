@@ -25,6 +25,7 @@ h3 { font-size: 22px; }
 }
 
 .scroll-down {
+  margin-top: $spacing-unit;
   color: #fff;
   font-size: 13px;
 }
@@ -37,3 +38,15 @@ h3 { font-size: 22px; }
   text-align: center;
 }
 
+
+.site-footer {
+  position: relative;
+  padding: $spacing-unit * 4 0;
+  border: 0;
+  color: #fff;
+  text-align: center;
+
+  a {
+    color: #ffd97d;
+  }
+}
