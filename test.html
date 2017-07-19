@@ -22,17 +22,27 @@
     .yellow { background-color: yellow; top: 70%; }
   </style>
   <script type="text/javascript" src="dist/smooth-parallax.min.js"></script>
+  <script type="text/javascript">window.addEventListener("DOMContentLoaded", function () { window.SmoothParallax.init() });</script>
 </head>
 <body>
 <div class="container">
   <div class="green"
-    data-smooth-parallax-element="true"
-    data-start-percent=".25"
-    data-end-percent=".45"
-    data-end-x=".5">
+    smooth-parallax=""
+    start-movement=".25"
+    end-movement=".45"
+    end-position-x=".5">
   </div>
-  <div class="blue" data-smooth-parallax-element="true" ></div>
-  <div class="yellow" data-smooth-parallax-element="true" ></div>
+  <div class="blue"
+    smooth-parallax=""
+    start-movement=".25"
+    end-movement=".45"
+    start-position-x=".5">
+  </div>
+  <div class="yellow"
+    smooth-parallax=""
+    start-movement=".25"
+    end-movement=".45"
+    end-position-y=".5"></div>
 </div>
 </body>
 </html>

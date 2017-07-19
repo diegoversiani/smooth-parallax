@@ -8,7 +8,7 @@
  * divs or what-have-you. Use this script to add background or foreground parallax
  * effect to your website.
  *
- * Website: http://diegoversiani.me/smooth-parallax
+ * Website: https://diegoversiani.me/smooth-parallax
  * Github: https://github.com/diegoversiani/smooth-parallax
  *
  * Author: Diego Versiani
@@ -134,7 +134,7 @@
    * @private
    */
   var getElementContainer = function ( element ) {
-    var containerId = element.getAttribute( 'data-container-id' );
+    var containerId = element.getAttribute( 'container-id' );
 
     if ( containerId != '' && document.getElementById( containerId ) ) {
       _container = document.getElementById( containerId );
@@ -177,15 +177,15 @@
         endX,
         endY;
 
-    _movingElements = document.querySelectorAll('[data-smooth-parallax-element]');
+    _movingElements = document.querySelectorAll('[smooth-parallax]');
 
     for (var i = 0; i < _movingElements.length; i++) {
-      startPercent = parseFloat(_movingElements[i].getAttribute( 'data-start-percent' )) || 0;
-      startX = parseFloat(_movingElements[i].getAttribute( 'data-start-x' )) || 0;
-      startY = parseFloat(_movingElements[i].getAttribute( 'data-start-y' )) || 0;
-      endPercent = parseFloat(_movingElements[i].getAttribute( 'data-end-percent' )) || 1;
-      endX = parseFloat(_movingElements[i].getAttribute( 'data-end-x' )) || 0;
-      endY = parseFloat(_movingElements[i].getAttribute( 'data-end-y' )) || 0;
+      startPercent = parseFloat(_movingElements[i].getAttribute( 'start-movement' )) || 0;
+      startX = parseFloat(_movingElements[i].getAttribute( 'start-position-x' )) || 0;
+      startY = parseFloat(_movingElements[i].getAttribute( 'start-position-y' )) || 0;
+      endPercent = parseFloat(_movingElements[i].getAttribute( 'end-movement' )) || 1;
+      endX = parseFloat(_movingElements[i].getAttribute( 'end-position-x' )) || 0;
+      endY = parseFloat(_movingElements[i].getAttribute( 'end-position-y' )) || 0;
 
       var _elementPosition = {
         container: getElementContainer( _movingElements[i] ),
@@ -291,12 +291,3 @@
   return publicMethods;
 
 });
-
-
-// TODO: Remove load event listener, to allow developer to choose when to init plugin
-window.addEventListener("DOMContentLoaded", function () { window.SmoothParallax.init() });
-
-
-
-
-
