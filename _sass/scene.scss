@@ -27,7 +27,7 @@
 #mountains {
   position: fixed;
   right: 0;
-  // bottom: -60%;
+  bottom: -60%;
   left: 0;
 }
 
@@ -55,7 +55,6 @@
 }
 
 #content {
-  // display: none;
   position: relative;
   bottom: 0;
   padding: $spacing-unit;
@@ -67,7 +66,6 @@
 #foreground {
   position: fixed;
   bottom: -60%;
-  bottom: 0;
   left: 0;
   right: 0;
 }

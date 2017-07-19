@@ -549,6 +549,7 @@ h3 {
 #mountains {
   position: fixed;
   right: 0;
+  bottom: -60%;
   left: 0; }
 
 #clouds {
@@ -578,7 +579,6 @@ h3 {
 #foreground {
   position: fixed;
   bottom: -60%;
-  bottom: 0;
   left: 0;
   right: 0; }
 
