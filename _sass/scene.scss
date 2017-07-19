@@ -1,3 +1,8 @@
+.introduction {
+  margin-bottom: 60vh;
+}
+
+
 #sky {
   position: fixed;
   top: 0;
@@ -7,6 +12,7 @@
   background-image: linear-gradient(-180deg, #268BD2 0%, #C5E0E8 21%, #F0F2E4 41%, #032833 82%);
 }
 
+#clouds,
 #mountains,
 #foreground {
   svg,
@@ -21,12 +27,36 @@
 #mountains {
   position: fixed;
   right: 0;
+  // bottom: 0;
+  bottom: -60%;
+  left: 0;
+}
+
+#clouds {
+  position: fixed;
+  right: 0;
   bottom: 0;
   left: 0;
-  height: 300vh;
+  height: 50vh;
+
+  #cloud-1 {
+    left: 10%;
+    bottom: 60%;
+  }
+
+  #cloud-2 {
+    left: 48%;
+    bottom: 50%;
+  }
+
+  #cloud-3 {
+    left: 65%;
+    bottom: 60%;
+  }
 }
 
 #content {
+  // display: none;
   position: relative;
   bottom: 0;
   padding: $spacing-unit;
@@ -37,7 +67,8 @@
 
 #foreground {
   position: fixed;
-  bottom: 0;
+  // bottom: 0;
+  bottom: -60%;
   left: 0;
   right: 0;
 }

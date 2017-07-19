@@ -498,17 +498,24 @@ h3 {
   font-weight: bold; }
 
 .subtitle {
-  color: #fff;
-  font-weight: bold; }
+  color: #fff; }
 
 .introduction-text {
   color: #fff;
   font-size: 24px;
   font-weight: lighter; }
 
+.scroll-down {
+  color: #fff;
+  font-size: 13px; }
+
 .introduction {
+  max-width: 560px;
   margin: 60px auto;
   text-align: center; }
+
+.introduction {
+  margin-bottom: 60vh; }
 
 #sky {
   position: fixed;
@@ -518,6 +525,8 @@ h3 {
   height: 300vh;
   background-image: linear-gradient(-180deg, #268BD2 0%, #C5E0E8 21%, #F0F2E4 41%, #032833 82%); }
 
+#clouds svg,
+#clouds img,
 #mountains svg,
 #mountains img,
 #foreground svg,
@@ -530,9 +539,24 @@ h3 {
 #mountains {
   position: fixed;
   right: 0;
+  bottom: -60%;
+  left: 0; }
+
+#clouds {
+  position: fixed;
+  right: 0;
   bottom: 0;
   left: 0;
-  height: 300vh; }
+  height: 50vh; }
+  #clouds #cloud-1 {
+    left: 10%;
+    bottom: 60%; }
+  #clouds #cloud-2 {
+    left: 48%;
+    bottom: 50%; }
+  #clouds #cloud-3 {
+    left: 65%;
+    bottom: 60%; }
 
 #content {
   position: relative;
@@ -544,7 +568,7 @@ h3 {
 
 #foreground {
   position: fixed;
-  bottom: 0;
+  bottom: -60%;
   left: 0;
   right: 0; }
 

@@ -10,19 +10,26 @@ layout: home
     <p class="introduction-text">
       Smooth parallax makes it easy to move objects when you scroll being it images, divs or <em>what-have-you</em>.
     </p>
-    <p class="install-instructions">
-      $ npm install smooth-parallax <br>
-      $ bower install smooth-parallax
-    </p>
+    <p class="scroll-down">(scroll down)</p>
   </div>
+
   <div id="sky"></div>
+
+  <div id="clouds">
+    {% include_relative assets/images/cloud-1.svg %}
+    {% include_relative assets/images/cloud-2.svg %}
+    {% include_relative assets/images/cloud-3.svg %}
+  </div>
+
   <div id="mountains">
     {% include_relative assets/images/mountains-level-1.svg %}
     {% include_relative assets/images/mountains-level-2.svg %}
     {% include_relative assets/images/mountains-level-3.svg %}
     {% include_relative assets/images/mountains-level-4.svg %}
   </div>
+
   <div id="content">{% capture readme_include %}{% include_relative README.md %}{% endcapture %}{{ readme_include | markdownify }}</div>
+  
   <div id="foreground">
     {% include_relative assets/images/hills.svg %}
     {% include_relative assets/images/road.svg %}
