@@ -251,7 +251,7 @@
    * Get movable element container
    * @private
    */
-  var initializeVariables = function () {
+  var initializeBrowserPrefixes = function () {
     _prefix = getBrowserPrefix();
     _jsPrefix = ( _prefix.lowercase == 'moz' ) ? 'Moz' : _prefix.lowercase;
     _cssPrefix = _prefix.css;
@@ -263,7 +263,7 @@
    */
   var loopUpdatePositions = function () {
     updateElementsPosition();
-    requestAnimationFrame(loopUpdatePositions);
+    requestAnimationFrame( loopUpdatePositions );
   };
 
 
@@ -275,7 +275,7 @@
     _settings = extend( defaults, options || {} );
 
     // Initialize variables
-    initializeVariables();
+    initializeBrowserPrefixes();
     initializeMovingElementsPosition();
     loopUpdatePositions();
   };
