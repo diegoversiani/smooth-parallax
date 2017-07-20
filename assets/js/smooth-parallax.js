@@ -1,4 +1,6 @@
 /**
+ * SmoothParallax 1.1.0
+ * 
  * File smooth-parallax.js.
  *
  * Yet another parallax script. Smooth parallax is intended to make it a lot easier to
@@ -6,7 +8,7 @@
  * divs or what-have-you. Use this script to add background or foreground parallax
  * effect to your website.
  *
- * Website: http://diegoversiani.me/smooth-parallax
+ * Website: https://diegoversiani.me/smooth-parallax
  * Github: https://github.com/diegoversiani/smooth-parallax
  *
  * Author: Diego Versiani
@@ -15,63 +17,140 @@
  * Based on the work of:
  * Rachel Smith: https://codepen.io/rachsmith/post/how-to-move-elements-on-scroll-in-a-way-that-doesn-t-suck-too-bad
  */
+(function (root, factory) {
+  if ( typeof define === 'function' && define.amd ) {
+    define([], factory(root));
+  } else if ( typeof exports === 'object' ) {
+    module.exports = factory(root);
+  } else {
+    root.SmoothParallax = factory(root);
+  }
+})(typeof global !== 'undefined' ? global : this.window || this.global, function (root) {
 
-(function(){
-  
   'use strict';
 
-  // Initialize EventListeners
-  window.addEventListener("DOMContentLoaded", init);
+  //
+  // Variables
+  //
 
-
+  var window = root; // Map window to root to avoid confusion
   var _container;
-  var _width, _height, _scrollHeight;
-  var pre = prefix();
+  var _width, _height, _scrollHeight, _viewPortHeight;
   var _scrollPercent = 0;
   var _scrollOffset = 0;
-  var _jsPrefix  = ( pre.lowercase == 'moz' ) ? 'Moz' : pre.lowercase;
-  var _cssPrefix = pre.css;
   var _movingElements = [];
   var _positions = [];
+  var _basePercentageOnOptions = [ 'containerVisibility', 'pageScroll' ];
+  var _baseMovementOnOptions = [ 'elementSize' ];
+  var _settings;
+  var publicMethods = {}; // Placeholder for public methods
+
+  // Default settings
+  var defaults = {
+    basePercentageOn: 'containerVisibility', // See `_basePercentageOnOptions` for more options
+    baseMovementOn: 'elementSize',
+  };
 
 
+  //
+  // Methods
+  //
 
+  /**
+   * Merge two or more objects. Returns a new object.
+   * @private
+   * @param {Boolean}  deep     If true, do a deep (or recursive) merge [optional]
+   * @param {Object}   objects  The objects to merge together
+   * @returns {Object}          Merged values of defaults and options
+   */
+  var extend = function () {
+    // Variables
+    var extended = {};
+    var deep = false;
+    var i = 0;
+    var length = arguments.length;
 
-  function init() {
-    var viewPortWidth = document.documentElement.clientWidth || window.innerWidth;
+    // Check if a deep merge
+    if ( Object.prototype.toString.call( arguments[0] ) === '[object Boolean]' ) {
+      deep = arguments[0];
+      i++;
+    }
 
-    if ( viewPortWidth >= 750 ) {
-      initMovingElements();
-      loop();
+    // Merge the object into the extended object
+    var merge = function (obj) {
+      for ( var prop in obj ) {
+        if ( Object.prototype.hasOwnProperty.call( obj, prop ) ) {
+          // If deep merge and property is an object, merge properties
+          if ( deep && Object.prototype.toString.call(obj[prop]) === '[object Object]' ) {
+            extended[prop] = extend( true, extended[prop], obj[prop] );
+          } else {
+            extended[prop] = obj[prop];
+          }
+        }
+      }
+    };
+
+    // Loop through each object and conduct a merge
+    for ( ; i < length; i++ ) {
+      var obj = arguments[i];
+      merge(obj);
+    }
+
+    return extended;
+  };
+
+  /**
+   * Get movable element container
+   * @private
+   */
+  var getElementContainer = function ( element ) {
+    var containerSelector = element.getAttribute( 'container' );
+    _container = element.parentNode;
+
+    if ( containerSelector != '' && document.querySelector( containerSelector ) ) {
+      _container = document.querySelector( containerSelector );
+    }
+
+    return _container;
+  };
+
+  /**
+   * Calculate variables used to determine elements position
+   * @private
+   */
+  var calculatePercent = function ( positionData ) {
+    _viewPortHeight = window.innerHeight;
+
+    // Based on `containerVisibility`
+    if ( _settings.basePercentageOn == 'containerVisibility' ) {  
+      _height = positionData.container.scrollHeight;
+      _scrollHeight = _height - _viewPortHeight;
+      _scrollOffset = _viewPortHeight - positionData.container.getBoundingClientRect().top;
+      _scrollPercent = _scrollOffset / _scrollHeight || 0;
+    }
+
+    // Based on `pageScroll`
+    if ( _settings.basePercentageOn == 'pageScroll' ) {
+      var documentElement = document.documentElement || document.body;
+      _height = documentElement.scrollHeight;
+      _scrollOffset = window.pageYOffset || documentElement.scrollTop;
+      _scrollPercent = _scrollOffset / ( _height - documentElement.clientHeight );
+    }
+
+    // Normalize scrollPercentage from 0 to 1
+    if ( _scrollPercent < 0 ) {
+      _scrollPercent = 0;
+    }
+    else if ( _scrollPercent > 1 ) {
+      _scrollPercent = 1;
     }
   };
 
-
-
-
-  /* See shared/which-browser-prefix.js */
-  function prefix() {
-    var styles = window.getComputedStyle(document.documentElement, ''),
-      pre = (Array.prototype.slice
-        .call(styles)
-        .join('') 
-        .match(/-(moz|webkit|ms)-/) || (styles.OLink === '' && ['', 'o'])
-      )[1],
-      dom = ('WebKit|Moz|MS|O').match(new RegExp('(' + pre + ')', 'i'))[1];
-    
-    return {
-        dom: dom,
-        lowercase: pre,
-        css: '-' + pre + '-',
-        js: pre[0].toUpperCase() + pre.substr(1)
-      };
-  };
-
-
-
-
-
-  function initMovingElements() {
+  /**
+   * Initializes positions for each moving element.
+   * @private
+   */
+  var initializeMovingElementsPosition = function () {
     var startPercent,
         startX,
         startY,
@@ -79,15 +158,15 @@
         endX,
         endY;
 
-    _movingElements = document.querySelectorAll('[data-smooth-parallax-element]');
+    _movingElements = document.querySelectorAll('[smooth-parallax]');
 
     for (var i = 0; i < _movingElements.length; i++) {
-      startPercent = parseFloat(_movingElements[i].getAttribute( 'data-start-percent' )) || 0;
-      startX = parseFloat(_movingElements[i].getAttribute( 'data-start-x' )) || 0;
-      startY = parseFloat(_movingElements[i].getAttribute( 'data-start-y' )) || 0;
-      endPercent = parseFloat(_movingElements[i].getAttribute( 'data-end-percent' )) || 1;
-      endX = parseFloat(_movingElements[i].getAttribute( 'data-end-x' )) || 0;
-      endY = parseFloat(_movingElements[i].getAttribute( 'data-end-y' )) || 0;
+      startPercent = parseFloat(_movingElements[i].getAttribute( 'start-movement' )) || 0;
+      startX = parseFloat(_movingElements[i].getAttribute( 'start-position-x' )) || 0;
+      startY = parseFloat(_movingElements[i].getAttribute( 'start-position-y' )) || 0;
+      endPercent = parseFloat(_movingElements[i].getAttribute( 'end-movement' )) || 1;
+      endX = parseFloat(_movingElements[i].getAttribute( 'end-position-x' )) || 0;
+      endY = parseFloat(_movingElements[i].getAttribute( 'end-position-y' )) || 0;
 
       var _elementPosition = {
         container: getElementContainer( _movingElements[i] ),
@@ -114,53 +193,18 @@
     }
   };
 
-
-
-
-
-  function getElementContainer( element ) {
-    var containerId = element.getAttribute( 'data-container-id' );
-
-    if ( containerId != '' && document.getElementById( containerId ) ) {
-      _container = document.getElementById( containerId );
-    }
-    else {
-      _container = element.parentNode;
-    }
-
-    return _container;
-  };
-
-
-
-
-
-  function calculateVariables( positionData ) {
-    _width = positionData.container.scrollWidth;
-    _height = positionData.container.scrollHeight;
-    _scrollHeight = _height + window.innerHeight;
-    _scrollOffset = window.innerHeight - positionData.container.getBoundingClientRect().top;
-    _scrollPercent = _scrollOffset/_scrollHeight || 0;
-
-    if ( _scrollPercent < 0 ) {
-      _scrollPercent = 0;
-    }
-    else if ( _scrollPercent > 1 ) {
-      _scrollPercent = 1;
-    }
-  };
-
-
-
-
-
-  function updateElementsPosition() {
+  /**
+   * Updates moving elements position.
+   * @private
+   */
+  var updateElementsPosition = function () {
     for (var i = 0; i < _movingElements.length; i++) {
       var p = _positions[i],
           baseWidth = _movingElements[i].scrollWidth,
-          baseHeight = _movingElements[i].scrollHeight;
+          baseHeight = _movingElements[i].scrollHeight,
+          transformValue;
 
-      calculateVariables( p );
+      calculatePercent( p );
       
       // calculate target position
       if(_scrollPercent <= p.start.percent) {
@@ -176,8 +220,8 @@
         p.target.y = p.start.y * baseHeight + ( p.diff.y * ( _scrollPercent - p.start.percent ) / p.diff.percent * baseHeight );
       }
       
-      // linear interpolation
-      if(!p.current.x) {
+      // easing with linear interpolation
+      if( !p.current.x || !p.current.y) {
         p.current.x = p.target.x;
         p.current.y = p.target.y;
       } else {
@@ -186,20 +230,70 @@
       }
 
       // update element style
-      _movingElements[i].style[ _jsPrefix + 'Transform' ] = 'translate3d(' + p.current.x + 'px, ' + p.current.y + 'px, 0px)';
-      _movingElements[i].style.transform = 'translate3d(' + p.current.x + 'px, ' + p.current.y + 'px, 0px)';
+      _movingElements[i].style.transform = 'translate3d(' + p.current.x + 'px, ' + p.current.y + 'px, 0)';
     }
   };
 
-
-
-
-
-  function loop() {
+  /**
+   * Keep updating elements position infinitelly.
+   * @private
+   */
+  var loopUpdatePositions = function () {
     updateElementsPosition();
-    requestAnimationFrame(loop);
+    requestAnimationFrame( loopUpdatePositions );
+  };
+
+  /**
+   * Keep updating elements position infinitelly.
+   * @private
+   */
+  var isSupported = function () {
+    var supported = true;
+
+    // Test basePercentageOn settings
+    if ( _basePercentageOnOptions.indexOf( _settings.basePercentageOn ) == -1 ) {
+      supported = false;
+      console.error( 'Value not supported for setting basePercentageOn: ' + _settings.basePercentageOn );
+    }
+
+    // Test basePercentageOn settings
+    if ( _baseMovementOnOptions.indexOf( _settings.baseMovementOn ) == -1 ) {
+      supported = false;
+      console.error( 'Value not supported for setting baseMovementOn: ' + _settings.baseMovementOn );
+    }
+
+    // TODO: ADD feature test for `querySelector`
+    // TODO: ADD feature test for css property `translate3d`
+
+    return supported;
+  };
+
+  /**
+   * Initializes plugin
+   */
+  publicMethods.init = function ( options ) {
+    // Merge user options with defaults
+    _settings = extend( defaults, options || {} );
+
+    // Bail early if not supported
+    if ( !isSupported() ) { return; }
+
+    // Initialize variables
+    initializeMovingElementsPosition();
+    loopUpdatePositions();
+  };
+
+  /**
+   * Exposes scroll percentage
+   */
+  publicMethods.getScrollPercent = function () {
+    return _scrollPercent;
   };
 
 
+  //
+  // Public APIs
+  //
+  return publicMethods;
 
-})();
+});
