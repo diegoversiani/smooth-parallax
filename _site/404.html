@@ -14,6 +14,17 @@
   <link rel="stylesheet" href="/smooth-parallax/assets/main.css">
   <link rel="canonical" href="http://localhost:4000/smooth-parallax/404.html">
   <link rel="alternate" type="application/rss+xml" title="Smooth Parallax" href="/smooth-parallax/feed.xml">
+
+  <script type="text/javascript" src="/smooth-parallax/assets/js/smooth-parallax.min.js"></script>
+  <script type="text/javascript">
+    window.addEventListener("DOMContentLoaded", function () {
+      if ( window.SmoothParallax ) {
+        window.SmoothParallax.init({
+          basePercentageOn: 'pageScroll',
+        });
+      }
+    });
+  </script>
   
   
 </head>
