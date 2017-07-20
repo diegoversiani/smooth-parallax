@@ -33,16 +33,15 @@
   // Variables
   //
 
+  var window = root; // Map window to root to avoid confusion
   var _container;
+  var _prefix, _jsPrefix, _cssPrefix;
   var _width, _height, _scrollHeight;
-  var _prefix;
   var _scrollPercent = 0;
   var _scrollOffset = 0;
-  var _jsPrefix, _cssPrefix;
-  var _settings;
   var _movingElements = [];
   var _positions = [];
-  var window = root; // Map window to root to avoid confusion
+  var _settings;
   var publicMethods = {}; // Placeholder for public methods
 
   // Default settings
@@ -126,13 +125,11 @@
    * @private
    */
   var getElementContainer = function ( element ) {
-    var containerId = element.getAttribute( 'container-id' );
+    var containerSelector = element.getAttribute( 'container' );
+    _container = element.parentNode;
 
-    if ( containerId != '' && document.getElementById( containerId ) ) {
-      _container = document.getElementById( containerId );
-    }
-    else {
-      _container = element.parentNode;
+    if ( containerSelector != '' && document.querySelector( containerSelector ) ) {
+      _container = document.querySelector( containerSelector );
     }
 
     return _container;
@@ -145,9 +142,10 @@
   var calculateVariables = function ( positionData ) {
     _width = positionData.container.scrollWidth;
     _height = positionData.container.scrollHeight;
+    // TODO: change window to element relative (container?)
     _scrollHeight = _height + window.innerHeight;
     _scrollOffset = window.innerHeight - positionData.container.getBoundingClientRect().top;
-    _scrollPercent = _scrollOffset/_scrollHeight || 0;
+    _scrollPercent = _scrollOffset / _scrollHeight || 0;
 
     if ( _scrollPercent < 0 ) {
       _scrollPercent = 0;
@@ -231,8 +229,8 @@
         p.target.y = p.start.y * baseHeight + ( p.diff.y * ( _scrollPercent - p.start.percent ) / p.diff.percent * baseHeight );
       }
       
-      // linear interpolation
-      if(!p.current.x) {
+      // easing with linear interpolation
+      if( !p.current.x || !p.current.y) {
         p.current.x = p.target.x;
         p.current.y = p.target.y;
       } else {
