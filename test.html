@@ -20,11 +20,33 @@
     .green { background-color: green; top: 50%; }
     .blue { background-color: blue; top: 60%; }
     .yellow { background-color: yellow; top: 70%; }
+
+    .debug {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 200px;
+      height: 30px;
+      background-color: #222;
+      color: #fff;
+    }
   </style>
   <script type="text/javascript" src="dist/smooth-parallax.min.js"></script>
-  <script type="text/javascript">window.addEventListener("DOMContentLoaded", function () { window.SmoothParallax.init() });</script>
+  <script type="text/javascript">
+    function loopDebug () {
+      var debug = document.querySelector( '.debug' );
+      debug.innerHTML = 'Scroll %: ' + window.SmoothParallax.getScrollPercent();
+      requestAnimationFrame( loopDebug );
+    };
+
+    window.addEventListener("DOMContentLoaded", function () {
+      window.SmoothParallax.init();
+      loopDebug();
+    });
+  </script>
 </head>
 <body>
+<div class="debug"></div>
 <div class="container">
   <div class="green"
     smooth-parallax=""

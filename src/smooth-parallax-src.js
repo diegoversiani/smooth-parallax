@@ -45,6 +45,7 @@
 
   // Default settings
   var defaults = {
+    baseMovementOn: 'elementSize',
   };
 
 
@@ -238,6 +239,13 @@
     // Initialize variables
     initializeMovingElementsPosition();
     loopUpdatePositions();
+  };
+
+  /**
+   * Exposes scroll percentage
+   */
+  publicMethods.getScrollPercent = function () {
+    return _scrollPercent;
   };
 
 
