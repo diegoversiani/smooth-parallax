@@ -34,11 +34,12 @@
   //
 
   var _container;
-  var _width, _height, _scrollHeight, _viewPortWidth;
+  var _width, _height, _scrollHeight;
   var _prefix;
   var _scrollPercent = 0;
   var _scrollOffset = 0;
   var _jsPrefix, _cssPrefix;
+  var _settings;
   var _movingElements = [];
   var _positions = [];
   var window = root; // Map window to root to avoid confusion
@@ -97,15 +98,6 @@
     }
 
     return extended;
-  };
-
-  /**
-   * Keep updating elements position infinitelly.
-   * @private
-   */
-  var loopUpdatePositions = function () {
-    updateElementsPosition();
-    requestAnimationFrame(loopUpdatePositions);
   };
 
   /**
@@ -260,10 +252,18 @@
    * @private
    */
   var initializeVariables = function () {
-    _viewPortWidth = document.documentElement.clientWidth || window.innerWidth;
     _prefix = getBrowserPrefix();
     _jsPrefix = ( _prefix.lowercase == 'moz' ) ? 'Moz' : _prefix.lowercase;
     _cssPrefix = _prefix.css;
+  };
+
+  /**
+   * Keep updating elements position infinitelly.
+   * @private
+   */
+  var loopUpdatePositions = function () {
+    updateElementsPosition();
+    requestAnimationFrame(loopUpdatePositions);
   };
 
 
@@ -271,17 +271,13 @@
    * Initializes plugin
    */
   publicMethods.init = function ( options ) {
-      // Merge user options with defaults
-      var settings = extend( defaults, options || {} );
+    // Merge user options with defaults
+    _settings = extend( defaults, options || {} );
 
-      // Initialize variables
-      initializeVariables();
-      console.log('initializeVariables');
-
-      if ( _viewPortWidth >= 750 ) {
-        initializeMovingElementsPosition();
-        loopUpdatePositions();
-      }
+    // Initialize variables
+    initializeVariables();
+    initializeMovingElementsPosition();
+    loopUpdatePositions();
   };
 
 
