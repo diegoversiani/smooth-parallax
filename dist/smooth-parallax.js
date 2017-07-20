@@ -35,7 +35,7 @@
 
   var window = root; // Map window to root to avoid confusion
   var _container;
-  var _width, _height, _scrollHeight;
+  var _width, _height, _scrollHeight, _viewPortHeight;
   var _scrollPercent = 0;
   var _scrollOffset = 0;
   var _movingElements = [];
@@ -45,6 +45,7 @@
 
   // Default settings
   var defaults = {
+    basePercentageOn: 'containerVisibility', // Possible values: containerVisibility, pageScroll
     baseMovementOn: 'elementSize',
   };
 
@@ -115,14 +116,26 @@
    * Calculate variables used to determine elements position
    * @private
    */
-  var calculateVariables = function ( positionData ) {
-    _width = positionData.container.scrollWidth;
-    _height = positionData.container.scrollHeight;
-    // TODO: change window to element relative (container?)
-    _scrollHeight = _height + window.innerHeight;
-    _scrollOffset = window.innerHeight - positionData.container.getBoundingClientRect().top;
-    _scrollPercent = _scrollOffset / _scrollHeight || 0;
+  var calculatePercent = function ( positionData ) {
+    _viewPortHeight = window.innerHeight;
 
+    // Based on `containerVisibility`
+    if ( _settings.basePercentageOn == 'containerVisibility' ) {  
+      _height = positionData.container.scrollHeight;
+      _scrollHeight = _height - _viewPortHeight;
+      _scrollOffset = _viewPortHeight - positionData.container.getBoundingClientRect().top;
+      _scrollPercent = _scrollOffset / _scrollHeight || 0;
+    }
+
+    // Based on `pageScroll`
+    if ( _settings.basePercentageOn == 'pageScroll' ) {
+      var documentElement = document.documentElement || document.body;
+      _height = documentElement.scrollHeight;
+      _scrollOffset = window.pageYOffset || documentElement.scrollTop;
+      _scrollPercent = _scrollOffset / ( _height - documentElement.clientHeight );
+    }
+
+    // Normalize scrollPercentage from 0 to 1
     if ( _scrollPercent < 0 ) {
       _scrollPercent = 0;
     }
@@ -189,7 +202,7 @@
           baseHeight = _movingElements[i].scrollHeight,
           transformValue;
 
-      calculateVariables( p );
+      calculatePercent( p );
       
       // calculate target position
       if(_scrollPercent <= p.start.percent) {
