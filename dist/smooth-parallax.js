@@ -40,12 +40,14 @@
   var _scrollOffset = 0;
   var _movingElements = [];
   var _positions = [];
+  var _basePercentageOnOptions = [ 'containerVisibility', 'pageScroll' ];
+  var _baseMovementOnOptions = [ 'elementSize' ];
   var _settings;
   var publicMethods = {}; // Placeholder for public methods
 
   // Default settings
   var defaults = {
-    basePercentageOn: 'containerVisibility', // Possible values: containerVisibility, pageScroll
+    basePercentageOn: 'containerVisibility', // See `_basePercentageOnOptions` for more options
     baseMovementOn: 'elementSize',
   };
 
@@ -241,6 +243,30 @@
     requestAnimationFrame( loopUpdatePositions );
   };
 
+  /**
+   * Keep updating elements position infinitelly.
+   * @private
+   */
+  var isSupported = function () {
+    var supported = true;
+
+    // Test basePercentageOn settings
+    if ( _basePercentageOnOptions.indexOf( _settings.basePercentageOn ) == -1 ) {
+      supported = false;
+      console.error( 'Value not supported for setting basePercentageOn: ' + _settings.basePercentageOn );
+    }
+
+    // Test basePercentageOn settings
+    if ( _baseMovementOnOptions.indexOf( _settings.baseMovementOn ) == -1 ) {
+      supported = false;
+      console.error( 'Value not supported for setting baseMovementOn: ' + _settings.baseMovementOn );
+    }
+
+    // TODO: ADD feature test for `querySelector`
+    // TODO: ADD feature test for css property `translate3d`
+
+    return supported;
+  };
 
   /**
    * Initializes plugin
@@ -248,6 +274,9 @@
   publicMethods.init = function ( options ) {
     // Merge user options with defaults
     _settings = extend( defaults, options || {} );
+
+    // Bail early if not supported
+    if ( !isSupported() ) { return; }
 
     // Initialize variables
     initializeMovingElementsPosition();
