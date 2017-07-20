@@ -35,7 +35,6 @@
 
   var window = root; // Map window to root to avoid confusion
   var _container;
-  var _prefix, _jsPrefix, _cssPrefix;
   var _width, _height, _scrollHeight;
   var _scrollPercent = 0;
   var _scrollOffset = 0;
@@ -97,27 +96,6 @@
     }
 
     return extended;
-  };
-
-  /**
-   * Get browser prefix
-   * @private
-   */
-  var getBrowserPrefix = function () {
-    var styles = window.getComputedStyle(document.documentElement, ''),
-      _prefix = (Array.prototype.slice
-        .call(styles)
-        .join('') 
-        .match(/-(moz|webkit|ms)-/) || (styles.OLink === '' && ['', 'o'])
-      )[1],
-      dom = ('WebKit|Moz|MS|O').match(new RegExp('(' + _prefix + ')', 'i'))[1];
-    
-    return {
-        dom: dom,
-        lowercase: _prefix,
-        css: '-' + _prefix + '-',
-        js: _prefix[0].toUpperCase() + _prefix.substr(1)
-      };
   };
 
   /**
@@ -239,20 +217,8 @@
       }
 
       // update element style
-      transformValue = 'translate3d(' + p.current.x + 'px, ' + p.current.y + 'px, 0px)';
-      _movingElements[i].style[ _jsPrefix + 'Transform' ] = transformValue;
-      _movingElements[i].style.transform = transformValue;
+      _movingElements[i].style.transform = 'translate3d(' + p.current.x + 'px, ' + p.current.y + 'px, 0px)';
     }
-  };
-
-  /**
-   * Get movable element container
-   * @private
-   */
-  var initializeBrowserPrefixes = function () {
-    _prefix = getBrowserPrefix();
-    _jsPrefix = ( _prefix.lowercase == 'moz' ) ? 'Moz' : _prefix.lowercase;
-    _cssPrefix = _prefix.css;
   };
 
   /**
@@ -273,7 +239,6 @@
     _settings = extend( defaults, options || {} );
 
     // Initialize variables
-    initializeBrowserPrefixes();
     initializeMovingElementsPosition();
     loopUpdatePositions();
   };
