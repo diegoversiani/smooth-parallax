@@ -27,8 +27,9 @@
 #mountains {
   position: fixed;
   right: 0;
-  bottom: -60%;
+  bottom: 0;
   left: 0;
+  height: 513px;
 }
 
 #clouds {
@@ -39,17 +40,17 @@
   height: 50vh;
 
   #cloud-1 {
-    left: 10%;
+    left: 20%;
     bottom: 60%;
   }
 
   #cloud-2 {
-    left: 48%;
+    left: 55%;
     bottom: 50%;
   }
 
   #cloud-3 {
-    left: 65%;
+    left: 68%;
     bottom: 60%;
   }
 }
@@ -65,9 +66,10 @@
 
 #foreground {
   position: fixed;
-  bottom: -60%;
+  bottom: 0;
   left: 0;
   right: 0;
+  height: 93px;
 }
 
 
