@@ -45,9 +45,6 @@
 
   // Default settings
   var defaults = {
-    turkey: true,
-    mayo: false,
-    bread: 'wheat',
   };
 
 
