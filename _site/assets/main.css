@@ -494,6 +494,11 @@ h2 {
 h3 {
   font-size: 22px; }
 
+h1,
+h2,
+h3 {
+  line-height: 1.4; }
+
 .title {
   color: #ffd97d;
   font-weight: bold; }
@@ -522,7 +527,7 @@ h3 {
 
 .introduction {
   max-width: 560px;
-  margin: 30px auto;
+  margin: 22.5px auto;
   text-align: center; }
 
 @media (min-width: 750px) {
@@ -590,7 +595,7 @@ h3 {
     left: 68%;
     bottom: 60%; }
 
-@media (min-width: 550px) {
+@media (min-width: 660px) {
   #clouds {
     display: block; } }
 #content {
