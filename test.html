@@ -26,8 +26,8 @@
     }
 
     .green { background-color: green; top: 0%; }
-    .blue { background-color: blue; top: 10%; }
-    .yellow { background-color: yellow; top: 20%; }
+    .blue { background-color: blue; top: 5%; }
+    .yellow { background-color: yellow; top: 10%; }
 
     .debug {
       z-index: 99;
@@ -49,7 +49,7 @@
     };
 
     window.addEventListener("load", function () {
-      SmoothParallax.init();
+      SmoothParallax.init({ basePercentageOn: "containerVisibility" });
       loopDebug();
     });
   </script>
@@ -64,6 +64,7 @@
     start-movement=".1"
     end-movement=".3"
     end-position-x="1">
+    base-size: containerSize
   </div>
   <div class="blue"
     smooth-parallax=""
