@@ -154,7 +154,9 @@
         startY,
         endPercent,
         endX,
-        endY;
+        endY,
+        baseSizeOn,
+        baseSizeOnOptions = [ 'elementsize', 'containerSize' ];
 
     _movingElements = document.querySelectorAll('[smooth-parallax]');
 
@@ -165,9 +167,15 @@
       endPercent = parseFloat(_movingElements[i].getAttribute( 'end-movement' )) || 1;
       endX = parseFloat(_movingElements[i].getAttribute( 'end-position-x' )) || 0;
       endY = parseFloat(_movingElements[i].getAttribute( 'end-position-y' )) || 0;
+      baseSizeOn = _movingElements[i].getAttribute( 'base-size' );
 
-      var _elementPosition = {
+      if ( baseSizeOnOptions.indexOf( baseSizeOn ) == -1 ) {
+        baseSizeOn = 'elementSize'; // Default value
+      }
+
+      var elementPosition = {
         container: getElementContainer( _movingElements[i] ),
+        baseSizeOn: baseSizeOn,
         start: {
           percent: startPercent,
           x: startX,
@@ -187,7 +195,7 @@
         current: {}
       };
 
-      _positions.push( _elementPosition );
+      _positions.push( elementPosition );
     }
   };
 
@@ -196,13 +204,22 @@
    * @private
    */
   var updateElementsPosition = function () {
+    calculatePercent( p );
+    
     for (var i = 0; i < _movingElements.length; i++) {
       var p = _positions[i],
-          baseWidth = _movingElements[i].scrollWidth,
-          baseHeight = _movingElements[i].scrollHeight,
+          baseWidth,
+          baseHeight,
           transformValue;
 
-      calculatePercent( p );
+      if ( p.baseSizeOn == 'elementSize' ) {
+        baseWidth = _movingElements[i].scrollWidth;
+        baseHeight = _movingElements[i].scrollHeight;
+      }
+      else if ( p.baseSizeOn == 'containerSize' ) {
+        baseWidth = p.container.scrollWidth - _movingElements[i].scrollWidth;
+        baseHeight = p.container.scrollHeight - _movingElements[i].scrollHeight;
+      }
       
       // calculate target position
       if(_scrollPercent <= p.start.percent) {
