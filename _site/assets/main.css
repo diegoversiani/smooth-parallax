@@ -508,8 +508,7 @@ h3 {
 
 .introduction-text {
   color: #fff;
-  font-size: 24px;
-  font-weight: lighter; }
+  font-size: 24px; }
 
 .scroll-down {
   margin-top: 30px;
@@ -526,7 +525,7 @@ h3 {
   animation-name: fadeInDown; }
 
 .introduction {
-  max-width: 560px;
+  max-width: 600px;
   margin: 22.5px auto;
   text-align: center; }
 
