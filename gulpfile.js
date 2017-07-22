@@ -31,7 +31,7 @@ gulp.task('default', ['watch'], function () { });
 // Uglifies and concat all JS files into one
 gulp.task('build-scripts', function() {
   var src = [
-      basePaths.src + 'smooth-parallax.js'
+      basePaths.src + 'smooth-parallax-src.js'
     ];
 
   // compiled (.js)
