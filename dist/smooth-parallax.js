@@ -204,8 +204,6 @@
    * @private
    */
   var updateElementsPosition = function () {
-    calculatePercent( p );
-    
     for (var i = 0; i < _movingElements.length; i++) {
       var p = _positions[i],
           baseWidth,
@@ -220,6 +218,10 @@
         baseWidth = p.container.scrollWidth - _movingElements[i].scrollWidth;
         baseHeight = p.container.scrollHeight - _movingElements[i].scrollHeight;
       }
+
+      // Need to calculate percentage for each element
+      // when based on `containerVisibility`
+      calculatePercent( p );
       
       // calculate target position
       if(_scrollPercent <= p.start.percent) {
