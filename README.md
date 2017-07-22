@@ -129,4 +129,4 @@ Licensed under MIT. Enjoy.
 
 ## Acknowledgement
 
-Smooth Parallax was created by [Diego Versiani](http://diegoversiani.me) for a better Parallax Effect.
+Smooth Parallax was created by [Diego Versiani](https://diegoversiani.me) for a better Parallax Effect.
