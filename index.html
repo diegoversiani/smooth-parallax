@@ -13,7 +13,7 @@ layout: home
     <p class="scroll-down">&mdash; scroll down &mdash;</p>
   </div>
 
-  <div id="sky" smooth-parallax="" end-movement=".25" end-position-y="-.7"></div>
+  <div id="sky" smooth-parallax="" end-movement=".25" end-position-y="-.66"></div>
 
   <div id="clouds">
     {% include_relative assets/images/cloud-1.svg %}
@@ -25,7 +25,6 @@ layout: home
     {% include_relative assets/images/mountains-level-1.svg %}
     {% include_relative assets/images/mountains-level-2.svg %}
     {% include_relative assets/images/mountains-level-3.svg %}
-    {% include_relative assets/images/mountains-level-4.svg %}
   </div>
 
   <div id="content">{% capture readme_include %}{% include_relative README.md %}{% endcapture %}{{ readme_include | markdownify }}</div>
@@ -33,7 +32,7 @@ layout: home
   <div id="foreground" smooth-parallax="" start-position-y="1" end-movement=".1">
     {% include_relative assets/images/hills.svg %}
     {% include_relative assets/images/road.svg %}
-    <img id="hippie-van" width="78" height="40" src="{{ site.baseurl }}/assets/images/hippie-van.png" smooth-parallax="" start-movement=".05" end-position-x="15">
+    <img id="hippie-van" width="78" height="40" src="{{ site.baseurl }}/assets/images/hippie-van.png" container=".page-content" base-size="containerSize" smooth-parallax="" start-movement=".05" end-position-x="1.3">
   </div>
 
 </div>

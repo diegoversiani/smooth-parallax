@@ -41,14 +41,12 @@
   var _movingElements = [];
   var _positions = [];
   var _basePercentageOnOptions = [ 'containerVisibility', 'pageScroll' ];
-  var _baseMovementOnOptions = [ 'elementSize' ];
   var _settings;
   var publicMethods = {}; // Placeholder for public methods
 
   // Default settings
   var defaults = {
     basePercentageOn: 'containerVisibility', // See `_basePercentageOnOptions` for more options
-    baseMovementOn: 'elementSize',
   };
 
 
@@ -156,7 +154,9 @@
         startY,
         endPercent,
         endX,
-        endY;
+        endY,
+        baseSizeOn,
+        baseSizeOnOptions = [ 'elementsize', 'containerSize' ];
 
     _movingElements = document.querySelectorAll('[smooth-parallax]');
 
@@ -167,9 +167,15 @@
       endPercent = parseFloat(_movingElements[i].getAttribute( 'end-movement' )) || 1;
       endX = parseFloat(_movingElements[i].getAttribute( 'end-position-x' )) || 0;
       endY = parseFloat(_movingElements[i].getAttribute( 'end-position-y' )) || 0;
+      baseSizeOn = _movingElements[i].getAttribute( 'base-size' );
 
-      var _elementPosition = {
+      if ( baseSizeOnOptions.indexOf( baseSizeOn ) == -1 ) {
+        baseSizeOn = 'elementSize'; // Default value
+      }
+
+      var elementPosition = {
         container: getElementContainer( _movingElements[i] ),
+        baseSizeOn: baseSizeOn,
         start: {
           percent: startPercent,
           x: startX,
@@ -189,7 +195,7 @@
         current: {}
       };
 
-      _positions.push( _elementPosition );
+      _positions.push( elementPosition );
     }
   };
 
@@ -198,13 +204,22 @@
    * @private
    */
   var updateElementsPosition = function () {
+    calculatePercent( p );
+    
     for (var i = 0; i < _movingElements.length; i++) {
       var p = _positions[i],
-          baseWidth = _movingElements[i].scrollWidth,
-          baseHeight = _movingElements[i].scrollHeight,
+          baseWidth,
+          baseHeight,
           transformValue;
 
-      calculatePercent( p );
+      if ( p.baseSizeOn == 'elementSize' ) {
+        baseWidth = _movingElements[i].scrollWidth;
+        baseHeight = _movingElements[i].scrollHeight;
+      }
+      else if ( p.baseSizeOn == 'containerSize' ) {
+        baseWidth = p.container.scrollWidth - _movingElements[i].scrollWidth;
+        baseHeight = p.container.scrollHeight - _movingElements[i].scrollHeight;
+      }
       
       // calculate target position
       if(_scrollPercent <= p.start.percent) {
@@ -254,12 +269,6 @@
     if ( _basePercentageOnOptions.indexOf( _settings.basePercentageOn ) == -1 ) {
       supported = false;
       console.error( 'Value not supported for setting basePercentageOn: ' + _settings.basePercentageOn );
-    }
-
-    // Test basePercentageOn settings
-    if ( _baseMovementOnOptions.indexOf( _settings.baseMovementOn ) == -1 ) {
-      supported = false;
-      console.error( 'Value not supported for setting baseMovementOn: ' + _settings.baseMovementOn );
     }
 
     // TODO: ADD feature test for `querySelector`
