@@ -48,11 +48,8 @@
       requestAnimationFrame( loopDebug );
     };
 
-    window.addEventListener("DOMContentLoaded", function () {
-      window.SmoothParallax.init({
-        basePercentageOn: 'pageScroll',
-        baseMovementOn: 'elementSize'
-      });
+    window.addEventListener("load", function () {
+      SmoothParallax.init();
       loopDebug();
     });
   </script>
