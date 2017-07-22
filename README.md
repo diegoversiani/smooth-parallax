@@ -2,7 +2,7 @@
 
 Parallax that doesn't suck! No jQuery required, just plain 'ol javascript.
 
-Smooth Parallax makes it easy to move objects when you scroll, being it images, divs or what-have-you. Use it to add that background or foreground parallax effect to your website or create a moving scene with a hippie van :)
+Smooth Parallax makes it easy to move objects when you scroll, being it images, divs or what-have-you. Use it to add that background or foreground parallax effect to your website or create a [moving scene with a hippie van](https://diegoversiani.me/smooth-parallax/) :)
 
 
 __Enjoy using Smooth Parallax?__

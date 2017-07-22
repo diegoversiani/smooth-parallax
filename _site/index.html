@@ -80,44 +80,146 @@
 </svg>
   </div>
 
-  <div id="content"><h1 id="smooth-parallax">smooth-parallax</h1>
+  <div id="content"><h1 id="smooth-parallax">Smooth Parallax</h1>
 
-<p>Parallax effect that doesn’t suck! Smooth parallax is intended to make it a lot easier to move objects on scroll (vertically or horizontally), being it images, divs or what-have-you.</p>
+<p>Parallax that doesn’t suck! No jQuery required, just plain ‘ol javascript.</p>
 
-<p>Use it to add that background or foreground parallax effect to your website.</p>
+<p>Smooth Parallax makes it easy to move objects when you scroll, being it images, divs or what-have-you. Use it to add that background or foreground parallax effect to your website or create a <a href="https://diegoversiani.me/smooth-parallax/">moving scene with a hippie van</a> :)</p>
 
-<h2 id="install">Install</h2>
+<p><strong>Enjoy using Smooth Parallax?</strong></p>
 
-<p>Install Smooth Parallax in your project via <code class="highlighter-rouge">npm</code> or <code class="highlighter-rouge">bower</code></p>
+<p>If you enjoy using Smooth Parallax and want to say thanks, you can leave me a small tip.
+All payments are securely handled through <a href="https://paypal.com">PayPal</a>.</p>
 
-<p><em>npm</em></p>
-<div class="highlighter-rouge"><pre class="highlight"><code>npm install smooth-parallax
+<p><a href="https://ko-fi.com/A0212ZQ" target="_blank"><img height="32" style="border:0px;height:32px;" src="https://az743702.vo.msecnd.net/cdn/kofi3.png?v=a" border="0" alt="Buy Me a Coffee at ko-fi.com" /></a></p>
+
+<h2 id="installation">Installation</h2>
+
+<p>Setting up is pretty straight-forward. Just download the script from <strong>dist</strong> folder and include it in your HTML:</p>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">src=</span><span class="s">"path/to/smooth-parallax.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
 </code></pre>
 </div>
 
-<p><em>bower</em></p>
-<div class="highlighter-rouge"><pre class="highlight"><code>bower install smooth-parallax
+<p>Smooth Parallax also supports AMD / CommonJS</p>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="c1">// AMD</span>
+<span class="nx">require</span><span class="p">([</span><span class="s2">"path/to/smooth-parallax"</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">SmoothParallax</span><span class="p">)</span> <span class="p">{});</span>
+
+<span class="c1">// CommonJS</span>
+<span class="kd">var</span> <span class="nx">SmoothParallax</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">"smooth-parallax"</span><span class="p">);</span>
 </code></pre>
 </div>
 
-<h2 id="build">Build</h2>
+<h3 id="npm--bower">NPM / Bower</h3>
 
-<p>NOTE: As a prerequisite, you will need <a href="https://npmjs.com/">npm</a> and <a href="http://gulpjs.com/">gulp</a> installed: <code class="highlighter-rouge">npm install -g gulp</code></p>
+<p>Smooth Parallax is also available on NPM and Bower:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>npm install
-gulp build-scripts
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>npm install smooth-parallax      <span class="c"># npm</span>
+bower install smooth-parallax    <span class="c"># bower</span>
 </code></pre>
 </div>
 
-<p>During development you can have gulp watch the <code class="highlighter-rouge">src</code> directory for changes and automatically build the <code class="highlighter-rouge">dist</code> files by running:</p>
+<h2 id="basic-usage">Basic Usage</h2>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>gulp
+<p><strong>Init</strong></p>
+
+<p>Just call <code class="highlighter-rouge">SmoothParallax.init()</code> to get objects moving and configure elements movement.</p>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
+  <span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"load"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">SmoothParallax</span><span class="p">.</span><span class="nx">init</span><span class="p">();</span>
+  <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
 </code></pre>
 </div>
 
-<h2 id="author">Author</h2>
+<p>Smooth Parallax will automatically look for all objects with the attribute <code class="highlighter-rouge">smooth-parallax</code> (ie.: <code class="highlighter-rouge">&lt;img src="images/hippie-van.png" smooth-parallax=""&gt;</code>).</p>
 
-<p>Diego Versiani: http://diegoversiani.me</p>
+<p><strong>Configure elements movement</strong></p>
+
+<p>You’ll also have to set at least one more attribute <code class="highlighter-rouge">start-position</code> or <code class="highlighter-rouge">end-position</code>, see options at <a href="#standard-options">standard options</a>.</p>
+
+<h2 id="standard-options">Standard Options</h2>
+
+<p><strong>Global Options</strong></p>
+
+<p>These options are passed to the <code class="highlighter-rouge">init</code> function when starting Smooth Parallax.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">basePercentageOn</code> Set how you want to track scroll percentage:
+    <ul>
+      <li><code class="highlighter-rouge">containerVisibility</code> <strong>default</strong>: scroll percentage for each moving object is calculated only when the element’s container is visible in the viewport. This prevents objects from moving while not visible.</li>
+      <li><code class="highlighter-rouge">pageScroll</code>: scroll percentage is based on the page scroll and is the same for all moving objects.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Elements Options</strong></p>
+
+<p>These options are passed as html attributes to the moving elements and define how that element movement behaves.</p>
+
+<p>All percentage values are in decimal form, ie.: <code class="highlighter-rouge">1 = 100%</code>. You can also set values greater than 1 and smaller than 0, ie.: <code class="highlighter-rouge">-0.5 = -50%</code> or <code class="highlighter-rouge">1.25 = 125%</code>.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">start-movement</code> - define at what scroll percentage to start moving the object. Default value is <code class="highlighter-rouge">0.0</code>;</li>
+  <li><code class="highlighter-rouge">end-movement</code> - define at what scroll percentage to stop moving the object. Default value is <code class="highlighter-rouge">1.0</code>.</li>
+  <li><code class="highlighter-rouge">start-position-x</code> - define the horizontal start position of the element in percentage of its the base-size (see option below).</li>
+  <li><code class="highlighter-rouge">start-position-y</code> - define the vertical start position of the element in percentage of its the base-size (see option below).</li>
+  <li><code class="highlighter-rouge">end-position-x</code> - define the horizontal end position of the element in percentage of its the base-size (see option below).</li>
+  <li><code class="highlighter-rouge">end-position-y</code> - define the vertical end position of the element in percentage of its the base-size (see option below).</li>
+  <li><code class="highlighter-rouge">container</code> - change the elements container element user to calculate its position, default is moving element’s parent node.</li>
+  <li><code class="highlighter-rouge">base-size</code> - define how to calculate the base size of the movement, used to calculate the target position.
+    <ul>
+      <li><code class="highlighter-rouge">elementSize</code>: calculate based on the element size itself.</li>
+      <li><code class="highlighter-rouge">containerSize</code>: calculate based on the elements container size.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="contributing-to-development">Contributing to Development</h2>
+
+<p>This isn’t a large project by any means, but I’m definitely welcome to any pull requests and contributions.</p>
+
+<p>You can get your copy up and running for development quickly by cloning the repo and running <a href="http://npmjs.org/">npm</a>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ npm install
+</code></pre>
+</div>
+
+<p>This will install all the necessary tools for compiling minified files.</p>
+
+<h2 id="change-log">Change Log</h2>
+
+<p><strong>1.1.0</strong></p>
+
+<p><strong>Upgrade Notice:</strong> This version changes how Smooth Parallax is initiated and how the elements options are set.</p>
+
+<ul>
+  <li>Converted script into a javascript plugin.</li>
+  <li>Renamed html attributes:
+    <ul>
+      <li><code class="highlighter-rouge">data-smooth-parallax-element</code> &gt; <code class="highlighter-rouge">smooth-parallax</code></li>
+      <li><code class="highlighter-rouge">data-start-percent</code> &gt; <code class="highlighter-rouge">start-movement</code></li>
+      <li><code class="highlighter-rouge">data-end-percent</code> &gt; <code class="highlighter-rouge">end-movement</code></li>
+      <li><code class="highlighter-rouge">data-start-x</code> &gt; <code class="highlighter-rouge">start-position-x</code></li>
+      <li><code class="highlighter-rouge">data-start-y</code> &gt; <code class="highlighter-rouge">start-position-y</code></li>
+      <li><code class="highlighter-rouge">data-end-x</code> &gt; <code class="highlighter-rouge">end-position-x</code></li>
+      <li><code class="highlighter-rouge">data-end-y</code> &gt; <code class="highlighter-rouge">end-position-y</code></li>
+      <li><code class="highlighter-rouge">data-smooth-parallax-element</code> &gt; <code class="highlighter-rouge">smooth-parallax</code></li>
+      <li><code class="highlighter-rouge">data-container-id</code> &gt; <code class="highlighter-rouge">container</code>.</li>
+    </ul>
+  </li>
+  <li>Changed element option <strong>container</strong> expected value to be a valid css selector instead of element id.</li>
+  <li>Added element option <strong>base-size</strong>.</li>
+  <li>Added global option <strong>pageScroll</strong>.</li>
+</ul>
+
+<p><strong>1.0.0</strong></p>
+
+<ul>
+  <li>Initial release</li>
+</ul>
 
 <h2 id="license">License</h2>
 
@@ -126,8 +228,6 @@ gulp build-scripts
 <h2 id="acknowledgement">Acknowledgement</h2>
 
 <p>Smooth Parallax was created by <a href="http://diegoversiani.me">Diego Versiani</a> for a better Parallax Effect.</p>
-
-<p><a href="https://ko-fi.com/A0212ZQ" target="_blank"><img height="32" style="border:0px;height:32px;" src="https://az743702.vo.msecnd.net/cdn/kofi3.png?v=a" border="0" alt="Buy Me a Coffee at ko-fi.com" /></a></p>
 </div>
   
   <div id="foreground" smooth-parallax="" start-position-y="1" end-movement=".1">
