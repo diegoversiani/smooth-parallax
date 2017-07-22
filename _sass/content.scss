@@ -1,5 +1,5 @@
 body {
-  font-family: "Dosis", "Roboto Condensed", "Ubuntu Condensed", serif;
+  font-family: "Dosis", "Roboto Condensed", "Ubuntu Condensed", sans-serif;
   font-size: 18px;
 }
 
@@ -26,16 +26,34 @@ h3 { font-size: 22px; }
 
 .scroll-down {
   margin-top: $spacing-unit;
-  color: #fff;
+  color: #555;
   font-size: 13px;
 }
+
+.scroll-down:after {
+  content: '➤';
+  display: block;
+  transform: rotate(90deg);
+  color: #555;
+  animation-iteration-count: infinite;
+  animation-duration: 1.5s;
+  animation-name: fadeInDown;
+}
+
+
 
 
 
 .introduction {
   max-width: 560px;
-  margin: $spacing-unit * 2 auto;
+  margin: $spacing-unit auto;
   text-align: center;
+}
+
+@media (min-width: 750px) {
+  .introduction {
+    margin: $spacing-unit * 2 auto;
+  }
 }
 
 
@@ -48,5 +66,17 @@ h3 { font-size: 22px; }
 
   a {
     color: #ffd97d;
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: rotate(90deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 100%, 0) rotate(90deg);
   }
 }

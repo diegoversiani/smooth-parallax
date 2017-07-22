@@ -33,6 +33,7 @@
 }
 
 #clouds {
+  display: none;
   position: fixed;
   right: 0;
   bottom: 0;
@@ -52,6 +53,12 @@
   #cloud-3 {
     left: 68%;
     bottom: 60%;
+  }
+}
+
+@media (min-width: 550px) {
+  #clouds {
+    display: block;
   }
 }
 

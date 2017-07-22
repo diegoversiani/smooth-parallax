@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /**
  * Reset box-sizing
  */
@@ -481,7 +482,7 @@ pre {
     color: #099; }
 
 body {
-  font-family: "Dosis", "Roboto Condensed", "Ubuntu Condensed", serif;
+  font-family: "Dosis", "Roboto Condensed", "Ubuntu Condensed", sans-serif;
   font-size: 18px; }
 
 h1 {
@@ -507,14 +508,26 @@ h3 {
 
 .scroll-down {
   margin-top: 30px;
-  color: #fff;
+  color: #555;
   font-size: 13px; }
+
+.scroll-down:after {
+  content: '➤';
+  display: block;
+  transform: rotate(90deg);
+  color: #555;
+  animation-iteration-count: infinite;
+  animation-duration: 1.5s;
+  animation-name: fadeInDown; }
 
 .introduction {
   max-width: 560px;
-  margin: 60px auto;
+  margin: 30px auto;
   text-align: center; }
 
+@media (min-width: 750px) {
+  .introduction {
+    margin: 60px auto; } }
 .site-footer {
   position: relative;
   padding: 120px 0;
@@ -524,6 +537,13 @@ h3 {
   .site-footer a {
     color: #ffd97d; }
 
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: rotate(90deg); }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 100%, 0) rotate(90deg); } }
 .introduction {
   margin-bottom: 60vh; }
 
@@ -554,6 +574,7 @@ h3 {
   height: 513px; }
 
 #clouds {
+  display: none;
   position: fixed;
   right: 0;
   bottom: 0;
@@ -569,6 +590,9 @@ h3 {
     left: 68%;
     bottom: 60%; }
 
+@media (min-width: 550px) {
+  #clouds {
+    display: block; } }
 #content {
   position: relative;
   bottom: 0;
