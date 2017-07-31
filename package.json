@@ -1,6 +1,6 @@
 {
   "name": "smooth-parallax",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Parallax that doesn't suck! No jQuery required, just plain 'ol javascript. Smooth Parallax makes it easy to move objects when you scroll, being it images, divs or what-have-you.",
   "main": "dist/smooth-parallax.js",
   "scripts": {
