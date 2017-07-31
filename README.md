@@ -100,6 +100,10 @@ This will install all the necessary tools for compiling minified files.
 
 ## Change Log
 
+__1.1.1__
+
+- Fix npm package.json info.
+
 __1.1.0__
 
 __Upgrade Notice:__ This version changes how Smooth Parallax is initiated and how the elements options are set.
