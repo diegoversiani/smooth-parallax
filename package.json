@@ -1,8 +1,8 @@
 {
   "name": "smooth-parallax",
   "version": "1.1.0",
-  "description": "Smooth Parallax makes it a lot easier to move objects when the page scroll with ease.",
-  "main": "src/smooth-parallax.js",
+  "description": "Parallax that doesn't suck! No jQuery required, just plain 'ol javascript. Smooth Parallax makes it easy to move objects when you scroll, being it images, divs or what-have-you.",
+  "main": "dist/smooth-parallax.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/diegoversiani/smooth-parallax/issues"
   },
-  "homepage": "http://diegoversiani.me/smooth-parallax",
+  "homepage": "https://diegoversiani.me/smooth-parallax",
   "devDependencies": {
     "bower": "^1.8.0",
     "gulp": "^3.9.1",
