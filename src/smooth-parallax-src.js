@@ -12,7 +12,7 @@
  * Github: https://github.com/diegoversiani/smooth-parallax
  *
  * Author: Diego Versiani
- * Contact: http://diegoversiani.me
+ * Contact: https://diegoversiani.me/
  * 
  * Based on the work of:
  * Rachel Smith: https://codepen.io/rachsmith/post/how-to-move-elements-on-scroll-in-a-way-that-doesn-t-suck-too-bad
