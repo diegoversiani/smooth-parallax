@@ -113,6 +113,17 @@
   };
 
   /**
+   * Calculate page percent scrolled.
+   * @private
+   */
+  var calculatePageScrollPercent = function () {
+    var documentElement = document.documentElement || document.body;
+    _height = documentElement.scrollHeight;
+    _scrollOffset = window.pageYOffset || documentElement.scrollTop;
+    return _scrollOffset / ( _height - documentElement.clientHeight );
+  };
+
+  /**
    * Calculate variables used to determine elements position
    * @private
    */
@@ -129,10 +140,7 @@
 
     // Based on `pageScroll`
     if ( _settings.basePercentageOn == 'pageScroll' ) {
-      var documentElement = document.documentElement || document.body;
-      _height = documentElement.scrollHeight;
-      _scrollOffset = window.pageYOffset || documentElement.scrollTop;
-      _scrollPercent = _scrollOffset / ( _height - documentElement.clientHeight );
+      _scrollPercent = calculatePageScrollPercent();
     }
 
     // Normalize scrollPercentage from 0 to 1
@@ -298,7 +306,7 @@
    * Exposes scroll percentage
    */
   publicMethods.getScrollPercent = function () {
-    return _scrollPercent;
+    return calculatePageScrollPercent();
   };
 
 
