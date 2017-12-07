@@ -133,9 +133,8 @@
     // Based on `containerVisibility`
     if ( _settings.basePercentageOn == 'containerVisibility' ) {  
       _height = positionData.container.scrollHeight;
-      _scrollHeight = _height - _viewPortHeight;
       _scrollOffset = _viewPortHeight - positionData.container.getBoundingClientRect().top;
-      _scrollPercent = _scrollOffset / _scrollHeight || 0;
+      _scrollPercent = _scrollOffset / _height;
     }
 
     // Based on `pageScroll`
