@@ -1,5 +1,5 @@
 /**
- * SmoothParallax 1.1.0
+ * SmoothParallax 1.1.2
  * 
  * File smooth-parallax.js.
  *
@@ -47,6 +47,7 @@
   // Default settings
   var defaults = {
     basePercentageOn: 'containerVisibility', // See `_basePercentageOnOptions` for more options
+    decimalPrecision: 2
   };
 
 
@@ -253,6 +254,11 @@
         p.current.y = p.current.y + (p.target.y - p.current.y) * 0.1;
       }
 
+      // Round to decimal precision to prevent
+      // too many calculation trips
+      p.current.x = parseFloat( p.current.x.toFixed( _settings.decimalPrecision ) );
+      p.current.y = parseFloat( p.current.y.toFixed( _settings.decimalPrecision ) );
+
       // update element style
       _movingElements[i].style.transform = 'translate3d(' + p.current.x + 'px, ' + p.current.y + 'px, 0)';
     }
@@ -292,6 +298,7 @@
   publicMethods.init = function ( options ) {
     // Merge user options with defaults
     _settings = extend( defaults, options || {} );
+    _settings.decimalPrecision = parseInt( _settings.decimalPrecision ) || defaults.decimalPrecision;
 
     // Bail early if not supported
     if ( !isSupported() ) { return; }

@@ -100,6 +100,11 @@ This will install all the necessary tools for compiling minified files.
 
 ## Change Log
 
+__1.1.2__
+
+- Fix position calculation to 2 decimals precision.
+- Fix scroll percent calculation based on containerSize.
+
 __1.1.1__
 
 - Fix npm package.json info.

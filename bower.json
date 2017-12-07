@@ -1,6 +1,6 @@
 {
   "name": "smooth-parallax",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "homepage": "http://diegoversiani.me/smooth-parallax",
   "authors": [
     "Diego Versiani <diegoversiani@gmail.com>"
@@ -25,5 +25,5 @@
   "dependencies": {
   },
   "_source": "https://github.com/diegoversiani/smooth-parallax.git",
-  "_target": "~1.1.0"
+  "_target": "~1.1.2"
 }
