@@ -102,6 +102,7 @@ This will install all the necessary tools for compiling minified files.
 
 __1.1.2__
 
+- Improvement: Extend public method `getScrollPercent` to return scroll percentage for elements.
 - Fix position calculation to 2 decimals precision.
 - Fix scroll percent calculation based on containerSize.
 
