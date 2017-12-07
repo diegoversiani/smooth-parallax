@@ -98,6 +98,8 @@
     return extended;
   };
 
+
+
   /**
    * Get movable element container
    * @private
@@ -113,6 +115,8 @@
     return _container;
   };
 
+
+
   /**
    * Calculate page percent scrolled.
    * @private
@@ -123,6 +127,8 @@
     _scrollOffset = window.pageYOffset || documentElement.scrollTop;
     return _scrollOffset / ( _height - documentElement.clientHeight );
   };
+
+
 
   /**
    * Calculate variables used to determine elements position
@@ -151,6 +157,25 @@
       _scrollPercent = 1;
     }
   };
+
+
+
+  /**
+   * Get position data object for the element.
+   * @returns {Object} Position data object for element or false if not found.
+   */
+  var getPositionDataByElement = function ( el ) {
+    for (var i = 0; i < _positions.length; i++) {
+      if ( _positions[i].element == el ) {
+        return _positions[i];
+      }
+    }
+    
+    // Return false if not found
+    return false;
+  }
+
+
 
   /**
    * Initializes positions for each moving element.
@@ -182,6 +207,7 @@
       }
 
       var elementPosition = {
+        element: _movingElements[i],
         container: getElementContainer( _movingElements[i] ),
         baseSizeOn: baseSizeOn,
         start: {
@@ -309,10 +335,30 @@
   };
 
   /**
-   * Exposes scroll percentage
+   * Get scroll percentage for the element or page.
+   * @param {string} el Target element css selector.
+   * @return {float} Scroll percentage for the element or the page.
    */
-  publicMethods.getScrollPercent = function () {
-    return calculatePageScrollPercent();
+  publicMethods.getScrollPercent = function ( selector ) {
+    // Calculate page scroll if no selector was passed
+    if ( selector == undefined ) {
+      return calculatePageScrollPercent();
+    }
+
+    // Find element
+    // Return false if not found
+    var el = document.querySelector( selector );
+    if ( el == null ) return false;
+
+    // Calculate element scroll percent
+    var positionData = getPositionDataByElement( el );
+    if ( positionData ) {
+      calculatePercent( positionData );
+      return _scrollPercent;
+    }
+
+    // Return false otherwise
+    return false;
   };
 
 
