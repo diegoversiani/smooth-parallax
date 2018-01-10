@@ -100,6 +100,17 @@ This will install all the necessary tools for compiling minified files.
 
 ## Change Log
 
+__1.1.2__
+
+- Improvement: Extend public method `getScrollPercent` to return scroll percentage for elements.
+- Fix: issue calculating element's size for SVG on Firefox
+- Fix: position calculation to 2 decimals precision for better performance.
+- Fix: scroll percent calculation based on `containerSize`.
+
+__1.1.1__
+
+- Fix npm package.json info.
+
 __1.1.0__
 
 __Upgrade Notice:__ This version changes how Smooth Parallax is initiated and how the elements options are set.
@@ -129,4 +140,4 @@ Licensed under MIT. Enjoy.
 
 ## Acknowledgement
 
-Smooth Parallax was created by [Diego Versiani](http://diegoversiani.me) for a better Parallax Effect.
+Smooth Parallax was created by [Diego Versiani](https://diegoversiani.me) for a better Parallax Effect.

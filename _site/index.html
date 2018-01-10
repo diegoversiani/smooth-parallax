@@ -18,7 +18,7 @@
   <link rel="canonical" href="http://localhost:4000/smooth-parallax/">
   <link rel="alternate" type="application/rss+xml" title="Smooth Parallax - Parallax that doesn&#39;t suck!" href="/smooth-parallax/feed.xml">
 
-  <script type="text/javascript" src="/smooth-parallax/assets/js/smooth-parallax.min.js"></script>
+  <script type="text/javascript" src="/smooth-parallax/assets/js/smooth-parallax.js"></script>
   <script type="text/javascript">
     window.addEventListener("DOMContentLoaded", function () {
       if ( window.SmoothParallax ) {
@@ -194,6 +194,21 @@ bower install smooth-parallax    <span class="c"># bower</span>
 
 <h2 id="change-log">Change Log</h2>
 
+<p><strong>1.1.2</strong></p>
+
+<ul>
+  <li>Improvement: Extend public method <code class="highlighter-rouge">getScrollPercent</code> to return scroll percentage for elements.</li>
+  <li>Fix: issue calculating element’s size for SVG on Firefox</li>
+  <li>Fix: position calculation to 2 decimals precision for better performance.</li>
+  <li>Fix: scroll percent calculation based on <code class="highlighter-rouge">containerSize</code>.</li>
+</ul>
+
+<p><strong>1.1.1</strong></p>
+
+<ul>
+  <li>Fix npm package.json info.</li>
+</ul>
+
 <p><strong>1.1.0</strong></p>
 
 <p><strong>Upgrade Notice:</strong> This version changes how Smooth Parallax is initiated and how the elements options are set.</p>
@@ -230,7 +245,7 @@ bower install smooth-parallax    <span class="c"># bower</span>
 
 <h2 id="acknowledgement">Acknowledgement</h2>
 
-<p>Smooth Parallax was created by <a href="http://diegoversiani.me">Diego Versiani</a> for a better Parallax Effect.</p>
+<p>Smooth Parallax was created by <a href="https://diegoversiani.me">Diego Versiani</a> for a better Parallax Effect.</p>
 </div>
   
   <div id="foreground" smooth-parallax="" start-position-y="1" end-movement=".1">

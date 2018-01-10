@@ -1,5 +1,5 @@
 /**
- * SmoothParallax 1.1.0
+ * SmoothParallax 1.1.2
  * 
  * File smooth-parallax.js.
  *
@@ -12,7 +12,7 @@
  * Github: https://github.com/diegoversiani/smooth-parallax
  *
  * Author: Diego Versiani
- * Contact: http://diegoversiani.me
+ * Contact: https://diegoversiani.me/
  * 
  * Based on the work of:
  * Rachel Smith: https://codepen.io/rachsmith/post/how-to-move-elements-on-scroll-in-a-way-that-doesn-t-suck-too-bad
@@ -47,6 +47,7 @@
   // Default settings
   var defaults = {
     basePercentageOn: 'containerVisibility', // See `_basePercentageOnOptions` for more options
+    decimalPrecision: 2
   };
 
 
@@ -97,6 +98,8 @@
     return extended;
   };
 
+
+
   /**
    * Get movable element container
    * @private
@@ -112,6 +115,21 @@
     return _container;
   };
 
+
+
+  /**
+   * Calculate page percent scrolled.
+   * @private
+   */
+  var calculatePageScrollPercent = function () {
+    var documentElement = document.documentElement || document.body;
+    _height = documentElement.scrollHeight;
+    _scrollOffset = window.pageYOffset || documentElement.scrollTop;
+    return _scrollOffset / ( _height - documentElement.clientHeight );
+  };
+
+
+
   /**
    * Calculate variables used to determine elements position
    * @private
@@ -122,17 +140,13 @@
     // Based on `containerVisibility`
     if ( _settings.basePercentageOn == 'containerVisibility' ) {  
       _height = positionData.container.scrollHeight;
-      _scrollHeight = _height - _viewPortHeight;
       _scrollOffset = _viewPortHeight - positionData.container.getBoundingClientRect().top;
-      _scrollPercent = _scrollOffset / _scrollHeight || 0;
+      _scrollPercent = _scrollOffset / _height;
     }
 
     // Based on `pageScroll`
     if ( _settings.basePercentageOn == 'pageScroll' ) {
-      var documentElement = document.documentElement || document.body;
-      _height = documentElement.scrollHeight;
-      _scrollOffset = window.pageYOffset || documentElement.scrollTop;
-      _scrollPercent = _scrollOffset / ( _height - documentElement.clientHeight );
+      _scrollPercent = calculatePageScrollPercent();
     }
 
     // Normalize scrollPercentage from 0 to 1
@@ -143,6 +157,25 @@
       _scrollPercent = 1;
     }
   };
+
+
+
+  /**
+   * Get position data object for the element.
+   * @returns {Object} Position data object for element or false if not found.
+   */
+  var getPositionDataByElement = function ( el ) {
+    for (var i = 0; i < _positions.length; i++) {
+      if ( _positions[i].element == el ) {
+        return _positions[i];
+      }
+    }
+    
+    // Return false if not found
+    return false;
+  }
+
+
 
   /**
    * Initializes positions for each moving element.
@@ -174,6 +207,7 @@
       }
 
       var elementPosition = {
+        element: _movingElements[i],
         container: getElementContainer( _movingElements[i] ),
         baseSizeOn: baseSizeOn,
         start: {
@@ -210,13 +244,15 @@
           baseHeight,
           transformValue;
 
+      // Try get element's size with `scrollWidth` and `scrollHeight`
+      // otherwise use `getComputedStyle` which is more expensive
       if ( p.baseSizeOn == 'elementSize' ) {
-        baseWidth = _movingElements[i].scrollWidth;
-        baseHeight = _movingElements[i].scrollHeight;
+        baseWidth = _movingElements[i].scrollWidth || parseFloat( window.getComputedStyle( _movingElements[i] ).width );
+        baseHeight = _movingElements[i].scrollHeight || parseFloat( window.getComputedStyle( _movingElements[i] ).height );
       }
       else if ( p.baseSizeOn == 'containerSize' ) {
-        baseWidth = p.container.scrollWidth - _movingElements[i].scrollWidth;
-        baseHeight = p.container.scrollHeight - _movingElements[i].scrollHeight;
+        baseWidth = p.container.scrollWidth - (_movingElements[i].scrollWidth || parseFloat( window.getComputedStyle( _movingElements[i] ).width ) );
+        baseHeight = p.container.scrollHeight - (_movingElements[i].scrollHeight  || parseFloat( window.getComputedStyle( _movingElements[i] ).height ) );
       }
 
       // Need to calculate percentage for each element
@@ -245,6 +281,11 @@
         p.current.x = p.current.x + (p.target.x - p.current.x) * 0.1;
         p.current.y = p.current.y + (p.target.y - p.current.y) * 0.1;
       }
+
+      // Round to decimal precision to prevent
+      // too many calculation trips
+      p.current.x = parseFloat( p.current.x.toFixed( _settings.decimalPrecision ) );
+      p.current.y = parseFloat( p.current.y.toFixed( _settings.decimalPrecision ) );
 
       // update element style
       _movingElements[i].style.transform = 'translate3d(' + p.current.x + 'px, ' + p.current.y + 'px, 0)';
@@ -285,6 +326,7 @@
   publicMethods.init = function ( options ) {
     // Merge user options with defaults
     _settings = extend( defaults, options || {} );
+    _settings.decimalPrecision = parseInt( _settings.decimalPrecision ) || defaults.decimalPrecision;
 
     // Bail early if not supported
     if ( !isSupported() ) { return; }
@@ -295,10 +337,30 @@
   };
 
   /**
-   * Exposes scroll percentage
+   * Get scroll percentage for the element or page.
+   * @param {string} el Target element css selector.
+   * @return {float} Scroll percentage for the element or the page.
    */
-  publicMethods.getScrollPercent = function () {
-    return _scrollPercent;
+  publicMethods.getScrollPercent = function ( selector ) {
+    // Calculate page scroll if no selector was passed
+    if ( selector == undefined ) {
+      return calculatePageScrollPercent();
+    }
+
+    // Find element
+    // Return false if not found
+    var el = document.querySelector( selector );
+    if ( el == null ) return false;
+
+    // Calculate element scroll percent
+    var positionData = getPositionDataByElement( el );
+    if ( positionData ) {
+      calculatePercent( positionData );
+      return _scrollPercent;
+    }
+
+    // Return false otherwise
+    return false;
   };
 
 
