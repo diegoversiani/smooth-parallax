@@ -244,13 +244,15 @@
           baseHeight,
           transformValue;
 
+      // Try get element's size with `scrollWidth` and `scrollHeight`
+      // otherwise use `getComputedStyle` which is more expensive
       if ( p.baseSizeOn == 'elementSize' ) {
-        baseWidth = _movingElements[i].scrollWidth;
-        baseHeight = _movingElements[i].scrollHeight;
+        baseWidth = _movingElements[i].scrollWidth || parseFloat( window.getComputedStyle( _movingElements[i] ).width );
+        baseHeight = _movingElements[i].scrollHeight || parseFloat( window.getComputedStyle( _movingElements[i] ).height );
       }
       else if ( p.baseSizeOn == 'containerSize' ) {
-        baseWidth = p.container.scrollWidth - _movingElements[i].scrollWidth;
-        baseHeight = p.container.scrollHeight - _movingElements[i].scrollHeight;
+        baseWidth = p.container.scrollWidth - (_movingElements[i].scrollWidth || parseFloat( window.getComputedStyle( _movingElements[i] ).width ) );
+        baseHeight = p.container.scrollHeight - (_movingElements[i].scrollHeight  || parseFloat( window.getComputedStyle( _movingElements[i] ).height ) );
       }
 
       // Need to calculate percentage for each element
