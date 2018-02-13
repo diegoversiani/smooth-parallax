@@ -1,5 +1,9 @@
 # Smooth Parallax
 
+[![npm version](https://badge.fury.io/js/smooth-parallax.svg)](https://badge.fury.io/js/smooth-parallax)
+[![DragsterJS gzip size](http://img.badgesize.io/https://raw.githubusercontent.com/diegoversiani/smooth-parallax/master/dist/smooth-parallax.min.js?compression=gzip
+)](https://raw.githubusercontent.com/diegoversiani/smooth-parallax/master/dist/smooth-parallax.min.js)
+
 Parallax that doesn't suck! No jQuery required, just plain 'ol javascript.
 
 Smooth Parallax makes it easy to move objects when you scroll, being it images, divs or what-have-you. Use it to add that background or foreground parallax effect to your website or create a [moving scene with a hippie van](https://diegoversiani.me/smooth-parallax/) :)
